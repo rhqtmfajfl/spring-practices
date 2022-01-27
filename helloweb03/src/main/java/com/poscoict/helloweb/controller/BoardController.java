@@ -25,7 +25,7 @@ public class BoardController {
 	
 	
 	@ResponseBody //response로 화면에 바로
-	@RequestMapping("/board/view/{no}")   //no의 갓을 boardNo에 세팅
+	@RequestMapping("/board/view/{no}")   //no의 값을 boardNo에 세팅
 	public String view(@PathVariable("no") Long boardNo) { //
 		
 		return "BoardController.view( " + boardNo + ")";
