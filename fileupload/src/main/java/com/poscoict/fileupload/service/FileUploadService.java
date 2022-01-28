@@ -3,54 +3,75 @@ package com.poscoict.fileupload.service;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileUploadService {
-	
 	private static String SAVE_PATH = "/upload-images";
-	//upload-images 경로에 드라이브를 쓸 필요는 없다. 윈도우 용이면 드라이버를 결정해 줘야한다.
-	//여기서는 내가 실행하고 있는 것은 위도우 이므로 나는 c 에 디렉토리를 만드는데 경로는 내가 사용하고 있는 c 드라이브에 upload images를 사용한다.
-	// 자바 디렉토리 존재여부 확인하기 하면 된다.  자바 디렉토리 경로 생성하는 방법으로 찾아 보낟.
-	// 디렉토리는 외부에다가 만들어야 한다. 이클립스내에 디렉토리를 만들면 안되낟.
-	// 물리적으로 저장하는 곳은 
+	private static String URL_BASE = "/images";
 	
-	
-	
-	public String resotre(MultipartFile multipartfile) {
-		//url을 만들어 내야 한다.
+	public String restore(MultipartFile multipartFile) {
 		String url = null;
 		
-		
 		try {
-		
-			if(multipartfile.isEmpty()) {
+			if(multipartFile.isEmpty()) {
 				return url;
 			}
 			
+			String originFilename = multipartFile.getOriginalFilename();  //파일 명을 가지고 온다.
+			String extName = originFilename.substring(originFilename.lastIndexOf('.')+1);  //
+			String extName2 = originFilename.substring(originFilename.lastIndexOf('.'));
+
+			String saveFilename = genearteSaveFilename(extName);  // generateSaveFilename에 의해
+			long fileSize = multipartFile.getSize();  // org.springframework.web.multipart.commons.CommonsMultipartFile@506906d5 라고 하는 파일의 크기를 구한다.
 			
-			String originFileName = multipartfile.getOriginalFilename();
-			long fileSize = multipartfile.getSize();
 			
-			System.out.println("#########" + originFileName);
-			System.out.println("#########" + fileSize);
+			System.out.println("originFilename : " + originFilename); //예상 dog.jpg -> dog.jpg
+			
+			System.out.println("originFilename.substring(originFilename.lastIndexOf('.')+1)" + originFilename.substring(originFilename.lastIndexOf('.')+1)); // 4부터이므로 dog.jpg 면 j 부터 끝까지 자른다.
+			System.out.println("originFilename.lastIndexOf('.')" + originFilename.lastIndexOf('.'));  //예상 .jpg 가 나온다. -> 3 이 나온다. 이유 dog. 인데 .이 위치상 3이기때문에
 			
 			
-			byte[] data = multipartfile.getBytes();
-			OutputStream os = new FileOutputStream(SAVE_PATH + "");
-			//savepath 에서 디렉토리가 존재하지 않으면 만들수 있도록 한다.
-			//내가 경로를 설정 해주면 좋다.
+			System.out.println("extName" + extName); // jpg가 나오네
+			System.out.println("extName2" + extName2); // 여기서는 .jpg가 나오네
+
+			//getOriginalFilename 이 메서드는 파일명과 확장자까지 붙여서 문자열을 반환합니다.
+			System.out.println("##############" + originFilename);
+			System.out.println("##############" + saveFilename);
+			System.out.println("##############" + fileSize);
+			
+			byte[] data = multipartFile.getBytes();
+			OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFilename);
+			os.write(data);
+			os.close();
+			
+			url = URL_BASE + "/" + saveFilename;  //
 			
 		} catch(IOException ex) {
-			throw new RuntimeException("file upload error : " + ex);
+			throw new RuntimeException("file upload error:" + ex);
 		}
-		
 		
 		return url;
 	}
-	
-	
-	
+
+	private String genearteSaveFilename(String extName) {
+		String filename = "";
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		filename += calendar.get(Calendar.YEAR);
+		filename += calendar.get(Calendar.MONTH);
+		filename += calendar.get(Calendar.DATE);
+		filename += calendar.get(Calendar.HOUR);
+		filename += calendar.get(Calendar.MINUTE);
+		filename += calendar.get(Calendar.SECOND);
+		filename += calendar.get(Calendar.MILLISECOND);
+		filename += ("." + extName);  // 앞에는 년 월 일 시간 분 초 밀리세컨드 가 파일명으로 생성된다.
+		
+		return filename;
+	}
+
 }

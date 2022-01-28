@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	<!-- auto proxy --> 
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy /> <!-- 프록시는 클라이언트가 사용하려고 하는 실제 타깃처럼 위장해서 요청을 받습니다 -->
 	       
 	<context:annotation-config />
 	<context:component-scan base-package="com.poscoict.aoptest.service, com.poscoict.aoptest.aspect">

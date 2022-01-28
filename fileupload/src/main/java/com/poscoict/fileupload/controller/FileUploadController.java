@@ -12,27 +12,24 @@ import com.poscoict.fileupload.service.FileUploadService;
 
 @Controller
 public class FileUploadController {
-	
 	@Autowired
 	private FileUploadService fileUploadService;
 	
-	@RequestMapping({"","/form"})
+	@RequestMapping({"", "/form"})
 	public String form() {
 		return "form";
 	}
 	
-	
-	
-	@RequestMapping(value="/upload", method=RequestMethod.POST)
-	public String upload(@RequestParam(value="email", required=true)String email, 
-			@RequestParam(value="upload-file") MultipartFile multipartfile,
-			Model model) {  //fileupload가 없으면 에러 발생 upload-file
-	
+	@RequestMapping(value="/upload", method=RequestMethod.POST) //form.jsp 에서 post형식으로 /upload로 인해 안에 값을 받아온다.
+	public String upload(
+			@RequestParam(value="email", required=true, defaultValue="") String email, //email이랑
+			@RequestParam(value="upload-file") MultipartFile multipartFile,            // upload-filedmf form.jsp에서 받아온다.
+			Model model) {
 		
-		System.out.println("email : " + email);
+		System.out.println("email:" + email);
+		System.out.println("multipartFile : " + multipartFile.toString());
 		
-		String url = fileUploadService.resotre(multipartfile);  //임시로 업로드된 파일이 저장되어있다.
-		
+		String url = fileUploadService.restore(multipartFile);  //FileUploadService에서 resotre을 사용한다. @Autowired를 사용해서 fileUploadService를 가지고 온다.
 		model.addAttribute("url", url);
 		
 		return "result";
