@@ -30,6 +30,7 @@ public class FileUploadController {
 		System.out.println("multipartFile : " + multipartFile.toString());
 		
 		String url = fileUploadService.restore(multipartFile);  //FileUploadService에서 resotre을 사용한다. @Autowired를 사용해서 fileUploadService를 가지고 온다.
+		System.out.println("url 이다 : " + url);
 		model.addAttribute("url", url);
 		
 		return "result";
