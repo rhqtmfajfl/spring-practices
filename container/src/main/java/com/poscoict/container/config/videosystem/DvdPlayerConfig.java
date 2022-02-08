@@ -22,5 +22,9 @@ public class DvdPlayerConfig {
 		return new DVDPlayer();
 	}
 	
+	//주입(Indection) 하기1
+	
+	//
+	
 	
 }
