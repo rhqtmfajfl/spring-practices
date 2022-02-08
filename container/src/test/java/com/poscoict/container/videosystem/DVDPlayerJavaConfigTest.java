@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.poscoict.container.config.videosystem.DvdPlayerConfig;
+import com.poscoict.container.config.videosystem.DVDPlayerConfig;
 
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={DvdPlayerConfig.class})  //DvdPlayerConfig 클래스 생성 필요
+@ContextConfiguration(classes={DVDPlayerConfig.class})  //DvdPlayerConfig 클래스 생성 필요
 public class DVDPlayerJavaConfigTest {
 	
 	@Rule

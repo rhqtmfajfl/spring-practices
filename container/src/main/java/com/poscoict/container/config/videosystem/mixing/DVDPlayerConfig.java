@@ -1,0 +1,30 @@
+package com.poscoict.container.config.videosystem.mixing;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import com.poscoict.container.videosystem.DVDPlayer;
+import com.poscoict.container.videosystem.DigitalVideoDisc;
+
+/*
+ * 
+ * 		JavaConfig2(DVDPlayerConfig)	<----- JavaConfig1(DVDConfig)
+ * 										import
+ * 
+ * 		JavaConfig2 + JavaConfig1
+ * 
+ * 
+ */
+
+
+@Configuration
+@Import({DVDConfig.class})
+public class DVDPlayerConfig {
+	
+	@Bean
+	public DVDPlayer dvdPlayer(@Qualifier("avengersInfinityWar") DigitalVideoDisc dvd) { //avengersInfinityWar이거를 가지고 있는것을 찾는다.
+		return new DVDPlayer(dvd);
+	}
+}
